@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>레인지엑스 강남대치점 · 6개월 온라인 전환관리</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;600&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0a1019; --bg-2:#0c1422; --ink:#eef0ee;
+  --ink-soft:rgba(238,240,238,.62); --ink-dim:rgba(238,240,238,.34);
+  --gold:#c2a268; --gold-bright:#d8bd84; --gold-soft:rgba(194,162,104,.5); --gold-line:rgba(194,162,104,.22);
+  --glass:rgba(255,255,255,.045); --glass-line:rgba(255,255,255,.09);
+  --serif:'Noto Serif KR',serif; --sans:'Noto Sans KR',sans-serif;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-weight:300;line-height:1.9;
+  -webkit-font-smoothing:antialiased;overflow-x:hidden;word-break:keep-all;word-wrap:break-word;position:relative}
+.atmosphere{position:fixed;inset:0;z-index:-3;
+  background:radial-gradient(120% 80% at 50% -10%, #14213a 0%, var(--bg-2) 42%, var(--bg) 78%);transition:background .6s ease}
+.bloom{position:fixed;inset:0;z-index:-2;pointer-events:none;
+  background:radial-gradient(40% 30% at var(--bx,70%) var(--by,18%), rgba(194,162,104,.13), transparent 70%);
+  transition:opacity 1.2s ease,background .9s ease;will-change:background}
+.grain{position:fixed;inset:0;z-index:-2;pointer-events:none;opacity:.05;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>")}
+.progress{position:fixed;top:0;left:0;height:2px;width:0;z-index:50;
+  background:linear-gradient(90deg,var(--gold-soft),var(--gold));transition:width .1s linear}
+.dots{position:fixed;right:24px;top:50%;transform:translateY(-50%);z-index:40;display:flex;flex-direction:column;gap:9px}
+.dots a{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.16);transition:all .4s;display:block}
+.dots a.on{background:var(--gold);transform:scale(1.5)}
+
+.scene{min-height:100vh;min-height:100svh;display:flex;align-items:center;padding:118px 48px;position:relative}
+/* atmosphere image layers — only on .has-bg; safe if image missing */
+.scene.has-bg{isolation:isolate}
+.scene.has-bg::before{content:"";position:absolute;inset:0;z-index:-2;background-image:var(--scene-img);
+  background-size:cover;background-position:center;opacity:.34;filter:blur(.8px) saturate(90%) brightness(62%)}
+.scene.has-bg::after{content:"";position:absolute;inset:0;z-index:-1;background:
+  linear-gradient(90deg,rgba(10,16,25,.95) 0%,rgba(10,16,25,.82) 42%,rgba(10,16,25,.5) 100%),
+  radial-gradient(55% 60% at 75% 35%,rgba(194,162,104,.12),transparent 70%)}
+#closing.has-bg::after{background:
+  radial-gradient(120% 90% at 50% 50%,rgba(10,16,25,.62),rgba(10,16,25,.9) 80%),
+  radial-gradient(50% 50% at 50% 30%,rgba(194,162,104,.1),transparent 70%)}
+.wrap{max-width:880px;width:100%;margin:0 auto}
+.eyebrow{font-size:.66rem;letter-spacing:.34em;text-transform:uppercase;color:var(--gold);font-weight:500;margin-bottom:28px}
+.glass{background:var(--glass);backdrop-filter:blur(22px) saturate(120%);-webkit-backdrop-filter:blur(22px) saturate(120%);
+  border:1px solid var(--glass-line);border-radius:18px;padding:46px 44px;box-shadow:0 30px 80px rgba(0,0,0,.34)}
+.glass.tight{padding:38px 38px}
+.glass.bright{background:rgba(255,255,255,.07);border-color:rgba(194,162,104,.26)}
+
+.h-xl{font-family:var(--serif);font-weight:400;font-size:clamp(2rem,5.2vw,3.3rem);line-height:1.42;letter-spacing:-.01em}
+.h-lg{font-family:var(--serif);font-weight:400;font-size:clamp(1.5rem,3.6vw,2.25rem);line-height:1.5;letter-spacing:-.008em}
+.h-xl em,.h-lg em,.lead em{font-style:normal;color:var(--gold)}
+.lead{font-size:1rem;color:var(--ink-soft);line-height:2;max-width:620px;margin-top:24px}
+.lead strong{color:var(--ink);font-weight:400}
+.tiny{font-size:.78rem;color:var(--ink-dim);letter-spacing:.03em;line-height:1.9}
+.meta{margin-top:38px;font-size:.74rem;color:var(--ink-dim);letter-spacing:.12em;line-height:2}
+
+.rv{opacity:0;transform:translateY(28px);transition:opacity 1s ease,transform 1s cubic-bezier(.2,.7,.2,1)}
+.rv.in{opacity:1;transform:none}
+.rv.d1{transition-delay:.10s}.rv.d2{transition-delay:.20s}.rv.d3{transition-delay:.30s}
+.rv.d4{transition-delay:.40s}.rv.d5{transition-delay:.50s}.rv.d6{transition-delay:.60s}
+
+.scroll-hint{margin-top:50px;display:flex;align-items:center;gap:12px;font-size:.66rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-dim)}
+.scroll-hint .bar{width:30px;height:1px;background:var(--gold-line);position:relative;overflow:hidden}
+.scroll-hint .bar::after{content:'';position:absolute;inset:0;width:40%;background:var(--gold);animation:slide 2.2s ease-in-out infinite}
+@keyframes slide{0%{transform:translateX(-100%)}100%{transform:translateX(300%)}}
+
+/* proof */
+.stats{display:grid;grid-template-columns:repeat(3,1fr)}
+.stat{padding:6px 22px;border-left:1px solid var(--glass-line)}
+.stat:first-child{padding-left:0;border-left:none}
+.stat-v{font-family:var(--serif);font-size:clamp(1.4rem,3.2vw,2rem);color:var(--gold);font-weight:400;line-height:1.15}
+.stat-l{font-size:.75rem;color:var(--ink-soft);margin-top:10px;line-height:1.7}
+.note-line{margin-top:22px;padding:16px 20px;border-left:2px solid var(--gold-line);background:rgba(194,162,104,.05);
+  border-radius:0 8px 8px 0;font-size:.86rem;color:var(--ink);line-height:1.85}
+.note-line b{color:var(--gold-bright);font-weight:400}
+
+/* split */
+.split{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--glass-line);border-radius:14px;overflow:hidden}
+.split > div{background:rgba(255,255,255,.025);padding:30px 28px}
+.split .now{background:rgba(194,162,104,.05)}
+.split-k{font-size:.64rem;letter-spacing:.2em;text-transform:uppercase;font-weight:500;margin-bottom:14px}
+.split .was .split-k{color:var(--ink-dim)} .split .now .split-k{color:var(--gold)}
+.split p{font-size:.92rem;color:var(--ink-soft);line-height:1.85} .split .now p{color:var(--ink)}
+
+/* journey */
+.jflow{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-top:8px}
+.jstep{position:relative;background:rgba(255,255,255,.03);border:1px solid var(--glass-line);
+  border-radius:12px;padding:18px 16px;transition:border-color .4s,transform .4s}
+.jstep:hover{border-color:var(--gold-line);transform:translateY(-3px)}
+.jstep .jn{font-family:var(--serif);font-size:.74rem;color:var(--gold);letter-spacing:.1em}
+.jstep .jname{font-size:.88rem;color:var(--ink);margin-top:8px;line-height:1.45}
+.jstep .jsub{font-size:.7rem;color:var(--ink-dim);margin-top:5px}
+.jstep::after{content:'→';position:absolute;right:-13px;top:50%;transform:translateY(-50%);color:var(--gold);opacity:.5;font-size:.82rem;z-index:1}
+.jstep:last-child::after{display:none}
+.jline{margin-top:26px;font-family:var(--serif);font-size:1.05rem;color:var(--ink);line-height:1.8}
+.jline em{font-style:normal;color:var(--gold)}
+
+/* detail */
+.dbadge{display:inline-block;font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:#1a1206;
+  background:linear-gradient(90deg,var(--gold),var(--gold-bright));padding:6px 14px;border-radius:50px;font-weight:600;margin-bottom:22px}
+.dcard-head{display:flex;align-items:center;gap:18px;margin-bottom:8px}
+.dx{font-family:var(--serif);font-size:2.2rem;color:var(--gold);font-weight:300;line-height:1;
+  width:54px;height:54px;border:1px solid var(--gold-line);border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.dt{font-family:var(--serif);font-size:1.2rem;color:var(--ink);font-weight:400;line-height:1.4}
+.dsub{font-family:var(--serif);font-size:clamp(1.15rem,2.6vw,1.5rem);color:var(--ink);font-weight:300;line-height:1.5;margin:18px 0 22px}
+.dsub em{font-style:normal;color:var(--gold)}
+.dlist{list-style:none}
+.dlist li{display:flex;gap:13px;padding:11px 0;border-top:1px solid var(--glass-line);font-size:.9rem;color:var(--ink-soft);line-height:1.7}
+.dlist li::before{content:'—';color:var(--gold);flex-shrink:0}
+.dnote{margin-top:22px;padding:18px 22px;background:rgba(194,162,104,.06);border:1px solid var(--gold-line);
+  border-radius:10px;font-size:.83rem;color:var(--ink-soft);line-height:1.85}
+.dnote b{color:var(--ink);font-weight:400}
+.dlink{margin-top:16px;font-size:.78rem;color:var(--gold);letter-spacing:.02em;display:flex;align-items:center;gap:8px}
+.dlink::before{content:'↳';opacity:.7}
+
+/* include A-F */
+.rows{list-style:none;margin-top:4px}
+.rows li{display:flex;gap:14px;padding:15px 0;border-bottom:1px solid var(--glass-line);align-items:center;flex-wrap:wrap}
+.rows li:last-child{border-bottom:none}
+.let{flex-shrink:0;width:30px;height:30px;border-radius:8px;background:rgba(194,162,104,.16);border:1px solid var(--gold-line);
+  font-family:var(--serif);font-size:.95rem;color:var(--gold-bright);display:flex;align-items:center;justify-content:center;line-height:1}
+.rows .t{font-size:.93rem;color:var(--ink);line-height:1.55;flex:1;min-width:180px}
+.rows .s{font-size:.81rem;color:var(--ink-soft);display:block;margin-top:3px;line-height:1.6}
+.rmap-chip{flex-shrink:0;font-size:.7rem;color:var(--gold);background:rgba(194,162,104,.07);border:1px solid var(--gold-line);
+  border-radius:50px;padding:5px 13px;white-space:nowrap}
+.aux{margin-top:20px;padding:15px 20px;border:1px dashed var(--gold-line);border-radius:10px;font-size:.79rem;color:var(--ink-soft);line-height:1.8}
+.aux b{color:var(--ink);font-weight:400}
+.linknote{margin-top:16px;font-size:.8rem;color:var(--ink-dim);line-height:1.8}
+.linknote em{font-style:normal;color:var(--gold)}
+
+/* ROADMAP — sticky month rail */
+.roadmap-scene{display:block;min-height:200vh;padding:0;align-items:stretch}
+.roadmap-pin{position:sticky;top:0;min-height:100vh;display:flex;align-items:center;padding:110px 48px}
+.roadmap-grid{display:grid;grid-template-columns:226px 1fr;gap:30px;align-items:center;margin-top:30px}
+.month-rail{display:flex;flex-direction:column;gap:3px}
+.m-item{padding:11px 16px;border-left:2px solid transparent;border-radius:0 8px 8px 0;transition:all .45s ease}
+.m-item.active{border-left-color:var(--gold);background:rgba(194,162,104,.07)}
+.m-num{font-family:var(--serif);font-size:.95rem;color:var(--ink-dim);transition:color .4s}
+.m-item.active .m-num{color:var(--gold-bright)}
+.m-label{font-size:.8rem;color:var(--ink-soft);margin-top:2px;transition:color .4s}
+.m-item.active .m-label{color:var(--ink)}
+.m-desc{max-height:0;overflow:hidden;opacity:0;transition:all .5s ease;font-size:.79rem;color:var(--ink-soft);line-height:1.7}
+.m-item.active .m-desc{max-height:160px;opacity:1;margin-top:9px}
+.gantt-cap{font-size:.66rem;color:var(--ink-dim);letter-spacing:.14em;text-align:right;margin-bottom:8px}
+.gantt{overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:6px}
+.gantt-inner{min-width:520px}
+.g-head{display:grid;grid-template-columns:120px repeat(6,1fr);gap:6px;padding-bottom:12px;border-bottom:1px solid var(--glass-line);margin-bottom:6px}
+.g-head .gh{font-size:.7rem;color:var(--ink-dim);text-align:center;font-weight:500;transition:color .4s}
+.g-head .gh:first-child{text-align:left;color:var(--gold);letter-spacing:.12em;text-transform:uppercase}
+.g-head .gh.lit{color:var(--gold-bright)}
+.g-row{display:grid;grid-template-columns:120px 1fr;gap:6px;align-items:center;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.05)}
+.g-row:last-child{border-bottom:none}
+.g-label{font-size:.78rem;color:var(--ink);line-height:1.3}
+.g-label .gl{font-family:var(--serif);color:var(--gold);margin-right:7px}
+.g-track{display:grid;grid-template-columns:repeat(6,1fr);height:26px;border-radius:6px;background-color:rgba(255,255,255,.02);
+  background-image:
+    linear-gradient(90deg,transparent calc((var(--am,1) - 1)*100%/6),rgba(194,162,104,.16) calc((var(--am,1) - 1)*100%/6),rgba(194,162,104,.16) calc(var(--am,1)*100%/6),transparent calc(var(--am,1)*100%/6)),
+    repeating-linear-gradient(90deg,transparent,transparent calc(100%/6 - 1px),rgba(255,255,255,.05) calc(100%/6 - 1px),rgba(255,255,255,.05) calc(100%/6));
+  transition:background-image .4s ease}
+.g-bar{grid-row:1;align-self:center;height:18px;margin:0 3px;border-radius:4px;position:relative;overflow:hidden;
+  background:linear-gradient(90deg,rgba(194,162,104,.28),rgba(194,162,104,.85));
+  box-shadow:0 2px 14px rgba(194,162,104,.20);
+  display:flex;align-items:center;padding:0 11px;font-size:.62rem;color:#19120a;font-weight:500;white-space:nowrap}
+.g-bar span{position:relative;z-index:1}
+.g-bar::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.28),transparent);transform:translateX(-110%);animation:shimmer 5s ease-in-out infinite}
+@keyframes shimmer{0%,55%{transform:translateX(-110%)}100%{transform:translateX(220%)}}
+.gantt-line{margin-top:24px;font-family:var(--serif);font-size:.98rem;color:var(--ink);line-height:1.8}
+.gantt-line em{font-style:normal;color:var(--gold)}
+
+/* roles */
+.roles2{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--glass-line);border-radius:14px;overflow:hidden}
+.roles2 > div{background:rgba(255,255,255,.025);padding:30px 28px}
+.roles2 .we{background:rgba(194,162,104,.05)}
+.rk{font-size:.64rem;letter-spacing:.18em;text-transform:uppercase;font-weight:500;margin-bottom:16px}
+.we .rk{color:var(--gold)} .rx .rk{color:var(--ink-dim)}
+.rl{list-style:none;font-size:.88rem;color:var(--ink-soft);line-height:1.65}
+.rl li{padding:7px 0;display:flex;gap:10px}
+.rl li::before{content:'·';color:var(--gold);font-weight:700;flex-shrink:0}
+.rx .rl li::before{color:var(--ink-dim)}
+.callout{margin-top:22px;padding:20px 24px;background:rgba(255,255,255,.03);border-left:2px solid var(--gold-line);
+  border-radius:0 10px 10px 0;font-size:.86rem;color:var(--ink-soft);line-height:1.9}
+.callout b{color:var(--ink);font-weight:400}
+
+/* promise */
+.promise-p{font-size:.96rem;color:var(--ink-soft);line-height:2}
+.promise-p + .promise-p{margin-top:16px}
+.promise-p b{color:var(--ink);font-weight:400}
+.promise-p .acc{color:var(--gold);font-weight:400}
+.mat{margin-top:26px;padding:24px 26px;background:rgba(194,162,104,.05);border:1px solid var(--gold-line);border-radius:12px}
+.mat-h{font-family:var(--serif);font-size:1rem;color:var(--ink);font-weight:400;margin-bottom:6px}
+.mat-sub{font-size:.8rem;color:var(--ink-soft);line-height:1.7;margin-bottom:18px}
+.mat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px 22px}
+.mat-item{display:flex;gap:10px;align-items:flex-start;font-size:.86rem;color:var(--ink-soft);line-height:1.6}
+.mat-item::before{content:'·';color:var(--gold);font-weight:700;flex-shrink:0}
+@media(max-width:760px){.mat-grid{grid-template-columns:1fr}}
+
+/* price */
+.price-card{text-align:center}
+.price-badge{display:inline-block;font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;color:#1a1206;
+  background:linear-gradient(90deg,var(--gold),var(--gold-bright));padding:7px 16px;border-radius:50px;font-weight:600;margin-bottom:26px}
+.price-total{font-family:var(--serif);font-size:clamp(2.4rem,7vw,3.6rem);color:var(--gold-bright);font-weight:500;line-height:1;letter-spacing:-.01em}
+.price-total span{font-size:.4em;color:var(--gold);margin-left:4px}
+.price-total-sub{font-size:.74rem;color:var(--ink-dim);letter-spacing:.16em;text-transform:uppercase;margin-top:14px}
+.price-rows{display:flex;justify-content:center;gap:0;margin-top:28px;border-top:1px solid var(--glass-line);padding-top:24px}
+.price-rows > div{padding:0 28px;border-left:1px solid var(--glass-line)}
+.price-rows > div:first-child{border-left:none}
+.price-rk{font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-dim);margin-bottom:8px}
+.price-rv{font-family:var(--serif);font-size:1.05rem;color:var(--ink)}
+.price-monthly{margin-top:20px;font-size:.8rem;color:var(--ink-dim);letter-spacing:.03em}
+.price-emph{margin-top:24px;font-family:var(--serif);font-size:1rem;color:var(--ink);line-height:1.85;max-width:520px;margin-left:auto;margin-right:auto}
+.price-emph em{font-style:normal;color:var(--gold)}
+.price-note{margin-top:16px;font-size:.76rem;color:var(--ink-dim);line-height:1.8}
+
+/* expand */
+.horizon{display:flex;flex-wrap:wrap;gap:10px;margin-top:8px}
+.chip{font-size:.82rem;color:var(--ink-soft);background:rgba(255,255,255,.03);border:1px solid var(--glass-line);
+  border-radius:50px;padding:9px 18px;transition:all .4s}
+.chip:hover{border-color:var(--gold-line);color:var(--ink)}
+
+#closing{text-align:center} #closing .wrap{max-width:760px}
+.closing-poem{font-family:var(--serif);font-weight:300;font-size:clamp(1.4rem,3.2vw,2rem);line-height:1.85;color:var(--ink)}
+.closing-poem em{font-style:normal;color:var(--gold)}
+.brand{margin-top:46px;font-size:.66rem;letter-spacing:.34em;text-transform:uppercase;color:var(--ink-dim)}
+
+@media(max-width:1000px) and (min-width:761px){
+  .jflow{grid-template-columns:repeat(3,1fr)}
+  .jstep:nth-child(3n)::after{display:none}
+}
+@media(max-width:760px){
+  .scene{padding:94px 22px}
+  .scene.has-bg::before{opacity:.18}
+  .scene.has-bg::after{background:
+    linear-gradient(180deg,rgba(10,16,25,.84),rgba(10,16,25,.8) 45%,rgba(10,16,25,.93)),
+    radial-gradient(70% 40% at 70% 12%,rgba(194,162,104,.1),transparent 70%)}
+  .glass{padding:32px 24px;border-radius:16px} .glass.tight{padding:28px 22px}
+  .dots{display:none}
+  .stats{grid-template-columns:1fr}
+  .stat{border-left:none;border-top:1px solid var(--glass-line);padding:16px 0 0}
+  .stat:first-child{border-top:none;padding-top:0}
+  .split,.roles2{grid-template-columns:1fr}
+  .lead{font-size:.95rem}
+  .dcard-head{gap:14px} .dx{width:46px;height:46px;font-size:1.8rem}
+  /* journey vertical timeline */
+  .jflow{grid-template-columns:1fr;gap:14px}
+  .jstep::after{content:'↓';right:auto;left:50%;top:auto;bottom:-15px;transform:translateX(-50%)}
+  .jstep .jname{font-size:.92rem}
+  /* roadmap → stacked, no sticky */
+  .roadmap-scene{min-height:auto}
+  .roadmap-pin{position:static;min-height:auto;padding:94px 22px}
+  .roadmap-grid{grid-template-columns:1fr;gap:18px}
+  .month-rail{gap:10px;margin-bottom:6px}
+  .m-item{border:1px solid var(--glass-line);border-left:2px solid var(--gold-line);border-radius:10px;padding:16px 18px}
+  .m-num{font-size:1rem;color:var(--gold-bright)} .m-label{color:var(--ink);font-size:.86rem}
+  .m-desc{max-height:none;opacity:1;margin-top:8px;font-size:.84rem}
+  .g-track{background-image:repeating-linear-gradient(90deg,transparent,transparent calc(100%/6 - 1px),rgba(255,255,255,.05) calc(100%/6 - 1px),rgba(255,255,255,.05) calc(100%/6))}
+  .g-head .gh{font-size:.74rem} .g-label{font-size:.8rem}
+  .price-rows{flex-direction:column;gap:16px}
+  .price-rows > div{border-left:none;padding:0}
+}
+@media(prefers-reduced-motion:reduce){
+  .rv{transition:none;opacity:1;transform:none}
+  .scroll-hint .bar::after,.g-bar::after{animation:none}
+}
+</style>
+</head>
+<body>
+<div class="atmosphere"></div>
+<div class="bloom" id="bloom"></div>
+<div class="grain"></div>
+<div class="progress" id="progress"></div>
+<nav class="dots" id="dots"></nav>
+
+<!-- 1 · HERO -->
+<section class="scene has-bg" id="hero" style="--scene-img:url('assets/bg-hero-range-studio.jpg')" data-bx="72%" data-by="16%">
+  <div class="wrap">
+    <div class="eyebrow rv">Range-X Daechi · We,Place · 6-Month</div>
+    <h1 class="h-xl rv d1">온라인은<br><em>이미 반응하고 있습니다.</em></h1>
+    <p class="lead rv d2">지난 2개월, 검색·콘텐츠·외부 신호에서 반응이 확인되었습니다.<br>다음 6개월은 그 반응을 <strong>상담과 예약으로 이어지게</strong> 만드는 기간입니다.</p>
+    <div class="scroll-hint rv d3"><span class="bar"></span> 아래로 내려가며 함께 보기</div>
+    <div class="meta rv d4">레인지엑스 강남대치점 송기훈 대표님께 · 위플레이스 드림</div>
+  </div>
+</section>
+
+<!-- 2 · 지난 2개월의 확인 -->
+<section class="scene has-bg" id="proof" style="--scene-img:url('assets/bg-proof-ai-search.jpg')" data-bx="30%" data-by="22%">
+  <div class="wrap">
+    <div class="eyebrow rv">지난 2개월의 확인</div>
+    <h2 class="h-lg rv d1">온라인은,<br><em>이미 반응했습니다.</em></h2>
+    <div class="glass rv d2" style="margin-top:36px">
+      <div class="stats">
+        <div class="stat"><div class="stat-v">6개 키워드</div><div class="stat-l">네이버플레이스 1페이지권 안착</div></div>
+        <div class="stat"><div class="stat-v">19만+</div><div class="stat-l">메타(Threads·인스타) 최근 30일 조회</div></div>
+        <div class="stat"><div class="stat-v">운영 중</div><div class="stat-l">독립 홈페이지 선제 제작 (Netlify)</div></div>
+      </div>
+      <div class="note-line"><b>19만+ 조회는 사라지는 숫자가 아니라, AI 검색과 브랜드 신뢰에 연결될 수 있는 외부 신호</b>입니다.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 3 · 기존 계약과 이번 계약의 차이 -->
+<section class="scene" id="diff" data-bx="68%" data-by="20%">
+  <div class="wrap">
+    <div class="eyebrow rv">기존 계약과 이번 계약의 차이</div>
+    <h2 class="h-lg rv d1">달라지는 건 금액이 아니라,<br><em>관리하는 범위</em>입니다.</h2>
+    <div class="split rv d2" style="margin-top:34px">
+      <div class="was"><div class="split-k">기존 · 단기 운영</div><p>노출과 콘텐츠 업로드 중심.<br>문의 이후의 흐름은 매장이 개별 대응했습니다.</p></div>
+      <div class="now"><div class="split-k">이번 · 6개월 전환관리</div><p>노출에 더해 문의 연결과 검색 신뢰까지.<br>들어온 문의가 상담으로 이어지게 묶습니다.</p></div>
+    </div>
+    <p class="lead rv d3">기존 운영비와의 차이는 금액이 아니라 <strong>관리 범위의 차이</strong>입니다.</p>
+    <p class="tiny rv d4" style="margin-top:16px">※ 기존 계약상 Threads 운영분은 해당 회차에 한해 상호 전화 협의에 따라 프렌즈스크린 관련 운영으로 대체 진행되었으며, 이번 계약에서는 Threads를 인스타그램과 함께 메타 콘텐츠로 통합 운영합니다.</p>
+  </div>
+</section>
+
+<!-- 4 · 왜 6개월인가 -->
+<section class="scene has-bg" id="why" style="--scene-img:url('assets/bg-why-golf-ball.jpg')" data-bx="50%" data-by="8%" data-dark="1">
+  <div class="wrap">
+    <div class="eyebrow rv">왜 6개월인가</div>
+    <h2 class="h-lg rv d1">문의가 들어와도,<br>그 다음이 비어 있으면<br><em>놓칩니다.</em></h2>
+    <p class="lead rv d2">광고 문구와 상담, 홈페이지가 서로 다른 말을 하면 고객은 예약 직전에 멈춥니다. 이 어긋남을 맞추는 일은 한 달로 끝나지 않습니다.</p>
+    <div class="glass tight rv d3" style="margin-top:32px">
+      <p class="h-lg" style="font-size:clamp(1.15rem,2.6vw,1.5rem)">이번 계약은 콘텐츠를 더 많이 올리는 계약이 아니라,<br><em>광고 문구와 실제 상담 흐름을 맞추는 계약</em>입니다.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 5 · 고객 여정 -->
+<section class="scene has-bg" id="journey" style="--scene-img:url('assets/bg-journey-phone.jpg')" data-bx="46%" data-by="22%">
+  <div class="wrap">
+    <div class="eyebrow rv">고객의 결정 흐름</div>
+    <h2 class="h-lg rv d1">고객은 한 채널만 보고<br><em>결정하지 않습니다.</em></h2>
+    <div class="jflow" style="margin-top:34px">
+      <div class="jstep rv">  <div class="jn">01</div><div class="jname">Threads</div><div class="jsub">외부 신호 · 첫 인지</div></div>
+      <div class="jstep rv d1"><div class="jn">02</div><div class="jname">네이버 검색</div><div class="jsub">존재 확인</div></div>
+      <div class="jstep rv d2"><div class="jn">03</div><div class="jname">홈페이지 확인</div><div class="jsub">신뢰 점검</div></div>
+      <div class="jstep rv d3"><div class="jn">04</div><div class="jname">당근·플레이스·인스타 문의</div><div class="jsub">실제 접촉</div></div>
+      <div class="jstep rv d4"><div class="jn">05</div><div class="jname">답변 확인</div><div class="jsub">확신 형성</div></div>
+      <div class="jstep rv d5"><div class="jn">06</div><div class="jname">예약 · 방문</div><div class="jsub">전환</div></div>
+    </div>
+    <p class="jline rv d6">전환관리는 이 여섯 단계를 <em>끊기지 않게</em> 만드는 일입니다.</p>
+  </div>
+</section>
+
+<!-- 6 · 세부 A -->
+<section class="scene detail has-bg" id="detailA" style="--scene-img:url('assets/bg-detail-geo-search.jpg')" data-bx="66%" data-by="20%">
+  <div class="wrap">
+    <div class="eyebrow rv">세부 내역</div>
+    <div class="glass bright rv d1">
+      <span class="dbadge">운영 축 A</span>
+      <div class="dcard-head"><span class="dx">A</span><h3 class="dt">검색 신뢰 · GEO / AI 검색</h3></div>
+      <p class="dsub">검색이 매장을 <em>'설명'</em>할 수 있게.</p>
+      <ul class="dlist">
+        <li>홈페이지·FAQ를 구글·AI가 인용하기 쉬운 구조로 정리</li>
+        <li>강남·대치·한티 골프 검색 키워드 추적 및 개선</li>
+        <li>메타 콘텐츠 등 외부 신호와 브랜드 문장 자산을 연결</li>
+      </ul>
+      <div class="dnote">현재 확인 기준, <b>ChatGPT에서 '대치동 골프레슨' 검색 시 레인지엑스 강남대치점이 상단에 설명되는 흐름</b>이 확인되고 있습니다. 이는 보장이 아니라, AI가 매장을 설명하기 쉬운 구조를 꾸준히 강화해야 하는 이유입니다.</div>
+      <div class="dlink">이 항목은 로드맵 A 검색 신뢰·GEO 항목으로 6개월간 누적 관리됩니다.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 7 · 세부 B -->
+<section class="scene detail has-bg" id="detailB" style="--scene-img:url('assets/bg-detail-meta-content.jpg')" data-bx="34%" data-by="18%">
+  <div class="wrap">
+    <div class="eyebrow rv">세부 내역</div>
+    <div class="glass bright rv d1">
+      <span class="dbadge">운영 축 B</span>
+      <div class="dcard-head"><span class="dx">B</span><h3 class="dt">메타 콘텐츠 운영</h3></div>
+      <p class="dsub">인스타그램과 Threads를 <em>하나의 콘텐츠</em>로.</p>
+      <ul class="dlist">
+        <li>인스타그램 + Threads 통합 운영 (단일 메타 콘텐츠 범위)</li>
+        <li>게시물·후킹 문구 기획 및 톤 정리</li>
+        <li>이후 광고 전환에 활용 가능한 콘텐츠 소재 축적</li>
+      </ul>
+      <div class="dnote">최근 30일 <b>19만+ 조회</b>는 단순 SNS 성과가 아니라, 검색 신뢰 구조와 연결될 수 있는 <b>외부 신호·브랜드 문장 자산으로 작동할 가능성</b>으로 봅니다. (직접적 노출 인과를 단정하지 않습니다.)</div>
+      <div class="dlink">이 항목은 로드맵 B 메타 콘텐츠 항목과 연결됩니다.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 8 · 세부 C -->
+<section class="scene detail has-bg" id="detailC" style="--scene-img:url('assets/bg-detail-script-flow.jpg')" data-bx="62%" data-by="14%">
+  <div class="wrap">
+    <div class="eyebrow rv">세부 내역</div>
+    <div class="glass bright rv d1">
+      <span class="dbadge">운영 축 C</span>
+      <div class="dcard-head"><span class="dx">C</span><h3 class="dt">상담 스크립트 · 당근 문의 흐름</h3></div>
+      <p class="dsub">들어온 문의가 <em>같은 답</em>을 듣게.</p>
+      <ul class="dlist">
+        <li>당근 문의 응대 기준 및 상담 연결 스크립트 설계</li>
+        <li>문의 유형 기록 및 상담 흐름 점검 시트 운영</li>
+        <li>광고·응대·홈페이지 문구를 한 방향으로 6개월간 정렬</li>
+      </ul>
+      <div class="dnote">위플레이스는 <b>실제 예약 확정, 가격 판단, 일정 조율을 대신하지 않습니다.</b> 대신 문의 문구와 상담 연결 흐름을 설계해, 고객이 <b>매장으로 자연스럽게 이어지도록</b> 만듭니다.</div>
+      <div class="dlink">이 항목은 로드맵 C 당근·상담 스크립트 항목과 연결됩니다.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 9 · 포함 범위 A-F -->
+<section class="scene" id="include" data-bx="40%" data-by="18%">
+  <div class="wrap">
+    <div class="eyebrow rv">포함 범위 · A–F</div>
+    <h2 class="h-lg rv d1">6개월 동안<br><em>위플레이스가 운영하는 것</em>.</h2>
+    <div class="glass rv d2" style="margin-top:34px">
+      <ul class="rows">
+        <li><span class="let">A</span><span class="t">검색 신뢰 · GEO 강화<span class="s">구글·AI 검색 설명 구조 · 강남/대치/한티 키워드 추적·개선</span></span><span class="rmap-chip">1~6개월 누적</span></li>
+        <li><span class="let">B</span><span class="t">메타 콘텐츠 운영<span class="s">인스타그램 + Threads 통합 · 게시물·후킹 문구 기획</span></span><span class="rmap-chip">매월 운영</span></li>
+        <li><span class="let">C</span><span class="t">당근 문의 응대 기준 및 상담 연결 스크립트<span class="s">문의 유형 기록 및 상담 흐름 점검 시트 운영</span></span><span class="rmap-chip">2개월차부터 고도화</span></li>
+        <li><span class="let">D</span><span class="t">홈페이지 · FAQ · CTA<span class="s">Netlify/HTML · 모바일 CTA · AI 검색 설명 구조 정리</span></span><span class="rmap-chip">지속 개선</span></li>
+        <li><span class="let">E</span><span class="t">네이버 · 플레이스<span class="s">정보 점검 · 소식 · 예약/문의 동선 점검</span></span><span class="rmap-chip">매월 점검</span></li>
+        <li><span class="let">F</span><span class="t">월간 리포트 · 개선<span class="s">운영 내역 · 문의 흐름 · 다음 달 방향</span></span><span class="rmap-chip">매월 반복</span></li>
+      </ul>
+      <div class="aux"><b>보조 항목</b> · 프렌즈스크린은 위 대체 운영 내역을 반영해 보조 점검하며, 링크드인 등 외부 프로필·프로 구인 채널은 경량 점검 수준으로만 다룹니다.</div>
+    </div>
+    <p class="linknote rv d3">각 항목(A–F)은 다음 장 로드맵에서 <em>서로 다른 시점에 시작되어 6개월간 누적</em>됩니다.</p>
+  </div>
+</section>
+
+<!-- 10 · ROADMAP (sticky month rail) -->
+<section class="scene roadmap-scene" id="roadmap" style="--am:1" data-bx="50%" data-by="22%">
+  <div class="roadmap-pin">
+    <div class="wrap">
+      <div class="eyebrow rv">월별 로드맵 · 누적 운영</div>
+      <h2 class="h-lg rv d1">한 번에 끝나는 작업이 아니라,<br><em>누적되는 운영</em>입니다.</h2>
+      <div class="roadmap-grid rv d2">
+        <aside class="month-rail">
+          <div class="m-item active"><div class="m-num">1개월차</div><div class="m-label">구조 세팅</div><div class="m-desc">기초 구조를 정리합니다. 홈페이지, 검색 등록, 메타 콘텐츠 방향, 문의 응대 기준을 세팅합니다.</div></div>
+          <div class="m-item"><div class="m-num">2개월차</div><div class="m-label">응대 기준 정리</div><div class="m-desc">문의 유형을 기록하고, 실제 상담 흐름에 맞춰 스크립트를 정리합니다.</div></div>
+          <div class="m-item"><div class="m-num">3개월차</div><div class="m-label">콘텐츠 체계화</div><div class="m-desc">메타 콘텐츠와 검색 키워드 반응을 비교하며, 반복 가능한 운영 체계를 만듭니다.</div></div>
+          <div class="m-item"><div class="m-num">4개월차</div><div class="m-label">검색·상담 보완</div><div class="m-desc">홈페이지 FAQ, CTA, 상담 문구를 보완해 이탈 지점을 줄입니다.</div></div>
+          <div class="m-item"><div class="m-num">5개월차</div><div class="m-label">전환 흐름 점검</div><div class="m-desc">광고 문구와 실제 상담 흐름이 맞는지 점검하고, 전환 흐름을 정리합니다.</div></div>
+          <div class="m-item"><div class="m-num">6개월차</div><div class="m-label">다음 확장 판단</div><div class="m-desc">6개월 데이터를 바탕으로 다음 확장 여부를 판단합니다.</div></div>
+        </aside>
+        <div class="roadmap-right">
+          <p class="gantt-cap">← 1개월차에서 6개월차까지 →</p>
+          <div class="glass" style="padding:26px 24px">
+            <div class="gantt"><div class="gantt-inner">
+              <div class="g-head">
+                <div class="gh">항목 / 기간</div>
+                <div class="gh" data-m="1">1</div><div class="gh" data-m="2">2</div><div class="gh" data-m="3">3</div><div class="gh" data-m="4">4</div><div class="gh" data-m="5">5</div><div class="gh" data-m="6">6</div>
+              </div>
+              <div class="g-row"><div class="g-label"><span class="gl">A</span>검색 신뢰·GEO</div><div class="g-track"><div class="g-bar" style="grid-column:2/7"><span>구조 정리 → 누적</span></div></div></div>
+              <div class="g-row"><div class="g-label"><span class="gl">B</span>메타 콘텐츠</div><div class="g-track"><div class="g-bar" style="grid-column:1/7"><span>운영 → 체계화</span></div></div></div>
+              <div class="g-row"><div class="g-label"><span class="gl">C</span>당근·상담 스크립트</div><div class="g-track"><div class="g-bar" style="grid-column:2/7"><span>1차 → 정렬·보완</span></div></div></div>
+              <div class="g-row"><div class="g-label"><span class="gl">D</span>홈페이지·FAQ·CTA</div><div class="g-track"><div class="g-bar" style="grid-column:1/7"><span>구체화 → 지속 개선</span></div></div></div>
+              <div class="g-row"><div class="g-label"><span class="gl">E</span>네이버·플레이스</div><div class="g-track"><div class="g-bar" style="grid-column:1/7"><span>점검 → 키워드 추적</span></div></div></div>
+              <div class="g-row"><div class="g-label"><span class="gl">F</span>월간 리포트·개선</div><div class="g-track"><div class="g-bar" style="grid-column:2/7"><span>매월 점검 · 방향</span></div></div></div>
+            </div></div>
+          </div>
+        </div>
+      </div>
+      <p class="gantt-line rv d3">6개월은 한 번에 끝나는 작업이 아니라,<br>각 항목이 <em>서로 다른 시점에 시작되고 누적되는</em> 운영입니다.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 11 · 역할 구분 -->
+<section class="scene" id="roles" data-bx="58%" data-by="14%">
+  <div class="wrap">
+    <div class="eyebrow rv">역할 구분 · 함께 가는 방식</div>
+    <h2 class="h-lg rv d1">각자 가장 잘하는 자리에서,<br><em>같은 방향을 봅니다.</em></h2>
+    <div class="roles2 rv d2" style="margin-top:34px">
+      <div class="we">
+        <div class="rk">위플레이스 · 온라인 흐름·문구</div>
+        <ul class="rl">
+          <li>노출 · 콘텐츠 · 검색 구조 운영</li>
+          <li>문의 응대 기준 및 상담 연결 스크립트 설계</li>
+          <li>홈페이지 · FAQ · CTA 문구 정리</li>
+          <li>월간 리포트 및 개선 방향 제안</li>
+        </ul>
+      </div>
+      <div class="rx">
+        <div class="rk">레인지엑스 · 실제 운영 판단</div>
+        <ul class="rl">
+          <li>예약 확정 · 일정 조율</li>
+          <li>가격 · 할인 결정</li>
+          <li>프로 배정</li>
+          <li>현장 응대 및 최종 조치</li>
+        </ul>
+      </div>
+    </div>
+    <div class="callout rv d3">고객 응대나 클레임 상황이 발생할 경우, 위플레이스는 <b>매장 기준에 맞는 답변 문구와 온라인 대응 방향</b>을 함께 정리합니다. 단, 최종 판단과 현장 조치는 레인지엑스 측에서 진행합니다.</div>
+    <p class="lead rv d4"><strong>위플레이스는 온라인 흐름과 문구를 설계하고, 레인지엑스는 실제 운영 판단을 결정합니다.</strong></p>
+  </div>
+</section>
+
+<!-- 11.5 · 협업 약속 -->
+<section class="scene" id="promise" data-bx="44%" data-by="18%">
+  <div class="wrap">
+    <div class="eyebrow rv">함께 운영하기 위한 약속</div>
+    <h2 class="h-lg rv d1">6개월을 함께<br><em>운영하기 위한 약속</em>.</h2>
+    <div class="glass rv d2" style="margin-top:34px">
+      <p class="promise-p">이번 6개월은 위플레이스가 일방적으로 운영하는 기간이 아니라, <b>레인지엑스 강남대치점의 실제 현장 흐름과 온라인 반응을 맞춰가는 기간</b>입니다.</p>
+      <p class="promise-p">위플레이스는 과장된 성과 보장보다, <span class="acc">매월 확인되는 반응과 문의 흐름을 기준으로 개선 방향을 제안</span>하겠습니다.</p>
+      <p class="promise-p">레인지엑스가 실제 예약·가격·프로 배정·현장 응대 기준을 공유해주시면, 그 기준에 맞춰 <b>고객이 더 자연스럽게 상담으로 이어지도록 문구와 동선을 정리</b>하겠습니다.</p>
+
+      <div class="mat">
+        <div class="mat-h">운영 정확도를 높이기 위해 필요한 기본 자료</div>
+        <div class="mat-sub">아래 내용을 편하신 형태로 공유해주시면, 매장 기준에 맞춰 함께 정리해가겠습니다.</div>
+        <div class="mat-grid">
+          <div class="mat-item">레슨 상품 및 가격 기준</div>
+          <div class="mat-item">프로별 소개 문구 및 상담 가능 범위</div>
+          <div class="mat-item">예약 가능 시간대</div>
+          <div class="mat-item">체험 · 이벤트 진행 여부</div>
+          <div class="mat-item">자주 받는 문의와 실제 응대 기준</div>
+          <div class="mat-item">피하고 싶은 표현 · 강조하고 싶은 장점</div>
+        </div>
+      </div>
+    </div>
+    <p class="lead rv d3">현장 판단은 레인지엑스가, 온라인 흐름은 위플레이스가 — <strong>같은 방향에서 맞춰갑니다.</strong></p>
+  </div>
+</section>
+
+<!-- 12 · 금액 -->
+<section class="scene" id="price" data-bx="66%" data-by="16%">
+  <div class="wrap">
+    <div class="eyebrow rv">금액 제안</div>
+    <h2 class="h-lg rv d1">6개월<br><em>통합 운영 계약</em>.</h2>
+    <div class="glass price-card rv d2" style="margin-top:34px">
+      <span class="price-badge">6개월 통합 계약 · 6-Month Integrated</span>
+      <div class="price-total">14,520,000<span>원</span></div>
+      <div class="price-total-sub">총 계약금액 · VAT 포함</div>
+      <div class="price-rows">
+        <div><div class="price-rk">6개월 운영비</div><div class="price-rv">13,200,000원</div></div>
+        <div><div class="price-rk">VAT (10%)</div><div class="price-rv">1,320,000원</div></div>
+      </div>
+      <div class="price-monthly">월 환산 약 220만 원 + VAT (보조 설명)</div>
+      <p class="price-emph">월별 관리비가 아니라, <em>6개월 동안 전환 구조를 누적시키는 통합 운영비</em>입니다.</p>
+      <p class="price-note">추가 촬영, 신규 랜딩페이지 제작, 대규모 디자인물 제작 등은 별도 협의 항목입니다.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 13 · 확장 옵션 -->
+<section class="scene has-bg" id="expand" style="--scene-img:url('assets/bg-expand-studio.jpg')" data-bx="32%" data-by="14%">
+  <div class="wrap">
+    <div class="eyebrow rv">6개월 후 확장 옵션</div>
+    <h2 class="h-lg rv d1">흐름이 맞아야,<br>이후의 광고와 콘텐츠도<br><em>더 안정적으로 전환됩니다.</em></h2>
+    <p class="lead rv d2">6개월 동안 광고 흐름과 상담 흐름이 맞아 문의·예약 흐름이 확인되면, 그때 다음 단계를 별도로 제안드립니다.</p>
+    <div class="horizon rv d3" style="margin-top:28px">
+      <span class="chip">검증 소재 기반 광고 확장</span>
+      <span class="chip">예약관리 고도화</span>
+      <span class="chip">매장 운영 안정화</span>
+      <span class="chip">프로 구인 브랜딩</span>
+      <span class="chip">촬영 · 콘텐츠 확대</span>
+    </div>
+    <p class="tiny rv d4" style="margin-top:22px">※ 위 항목은 이번 계약에 포함되지 않으며, 결과 확인 후 필요한 만큼만 제안드립니다.</p>
+  </div>
+</section>
+
+<!-- 14 · 마무리 -->
+<section class="scene has-bg" id="closing" style="--scene-img:url('assets/bg-closing-quiet-bay.jpg')" data-bx="50%" data-by="20%">
+  <div class="wrap">
+    <div class="eyebrow rv" style="display:inline-block">Decision · 함께 그리는 다음 6개월</div>
+    <div class="closing-poem rv d1">지금 같은 화면을 보고 있는 이 순간이,<br><em>다음 6개월의 시작점</em>입니다.</div>
+    <p class="lead rv d2" style="margin-left:auto;margin-right:auto;text-align:center">온라인은 이미 반응했습니다.<br>이제 필요한 것은, 그 반응이 매장에서 <strong>놓치지 않는 흐름으로 이어지는 일</strong>입니다.</p>
+    <div class="brand rv d3">Range-X × We,Place</div>
+  </div>
+</section>
+
+<script>
+(function(){
+  var scenes = [].slice.call(document.querySelectorAll('.scene'));
+  var bloom = document.getElementById('bloom');
+  var atmo = document.querySelector('.atmosphere');
+  var progress = document.getElementById('progress');
+  var dotsNav = document.getElementById('dots');
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var isMobile = window.matchMedia('(max-width: 760px)').matches;
+
+  scenes.forEach(function(s){ var a=document.createElement('a'); a.href='#'+s.id; a.dataset.id=s.id; dotsNav.appendChild(a); });
+  var dots = [].slice.call(dotsNav.children);
+
+  var revIO = new IntersectionObserver(function(es){
+    es.forEach(function(e){ if(e.isIntersecting) e.target.classList.add('in'); });
+  }, {threshold:0.16});
+  document.querySelectorAll('.rv').forEach(function(el){ revIO.observe(el); });
+
+  var rm = document.getElementById('roadmap');
+  var mItems = [].slice.call(document.querySelectorAll('.m-item'));
+  var gHeads = [].slice.call(document.querySelectorAll('.g-head .gh[data-m]'));
+  var activeScene=null, curMonth=0, ticking=false;
+
+  function applyScene(t){
+    var id=t.id;
+    dots.forEach(function(d){ d.classList.toggle('on', d.dataset.id===id); });
+    bloom.style.setProperty('--bx', t.dataset.bx || '50%');
+    bloom.style.setProperty('--by', t.dataset.by || '18%');
+    var dark = t.dataset.dark==='1';
+    bloom.style.opacity = dark ? '0.4' : '1';
+    atmo.style.background = dark
+      ? 'radial-gradient(120% 80% at 50% -10%, #0e1626 0%, #0a1019 55%, #070b12 100%)'
+      : 'radial-gradient(120% 80% at 50% -10%, #14213a 0%, #0c1422 42%, #0a1019 78%)';
+  }
+  function setMonth(m){
+    rm.style.setProperty('--am', m);
+    mItems.forEach(function(it,i){ it.classList.toggle('active', i===(m-1)); });
+    gHeads.forEach(function(h){ h.classList.toggle('lit', parseInt(h.dataset.m,10)<=m); });
+  }
+
+  function frame(){
+    var h=document.documentElement;
+    progress.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%';
+    var mid=window.innerHeight/2, cur=null;
+    for(var i=0;i<scenes.length;i++){ var r=scenes[i].getBoundingClientRect(); if(r.top<=mid && r.bottom>=mid){ cur=scenes[i]; break; } }
+    if(cur && cur!==activeScene){ activeScene=cur; applyScene(cur); }
+    if(!isMobile){
+      var rr=rm.getBoundingClientRect();
+      var total=rm.offsetHeight-window.innerHeight;
+      if(total>0){
+        var p=(-rr.top)/total; p=Math.max(0,Math.min(1,p));
+        var month=Math.min(6,Math.max(1,Math.floor(p*5.999)+1));
+        if(month!==curMonth){ curMonth=month; setMonth(month); }
+      }
+      scenes.forEach(function(s){
+        if(s.id==='roadmap') return;
+        var r=s.getBoundingClientRect();
+        if(r.bottom<0||r.top>window.innerHeight) return;
+        var w=s.querySelector('.wrap'); if(w) w.style.transform='translateY('+(r.top*0.035)+'px)';
+      });
+    }
+    ticking=false;
+  }
+  function onScroll(){ if(!ticking){ ticking=true; window.requestAnimationFrame(frame); } }
+  document.addEventListener('scroll', onScroll, {passive:true});
+  window.addEventListener('resize', function(){ isMobile=window.matchMedia('(max-width:760px)').matches; onScroll(); }, {passive:true});
+  frame();
+})();
+</script>
+</body>
+</html>
